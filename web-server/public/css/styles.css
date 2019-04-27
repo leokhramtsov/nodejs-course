@@ -16,10 +16,11 @@ body {
 }
 
 footer {
-  color: #888888;
-  border-top: 1px solid #eeeeee;
+  color: #ffeafc;
+  border-top: 1px solid #5e3961;
   margin-top: 16px;
   padding: 16px 0;
+  font-size: 12px;
 }
 
 header {

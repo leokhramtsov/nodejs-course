@@ -18,14 +18,14 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(publicDirPath));
 
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Weather App', name: 'Leo' });
+  res.render('index', { title: 'Weather App', name: 'Leo Khramtsov' });
 });
 
 app.get('/about', (req, res) => {
   res.render('about', {
     title: 'About',
     message: 'Testing about route',
-    name: 'Leo'
+    name: 'Leo Khramtsov'
   });
 });
 
@@ -33,7 +33,7 @@ app.get('/help', (req, res) => {
   res.render('help', {
     title: 'Help',
     message: 'Testing help route',
-    name: 'Leo'
+    name: 'Leo Khramtsov'
   });
 });
 
