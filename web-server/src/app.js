@@ -22,13 +22,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  res.render('about', { title: 'About', name: 'Leo' });
+  res.render('about', {
+    title: 'About',
+    message: 'Testing about route',
+    name: 'Leo'
+  });
 });
 
 app.get('/help', (req, res) => {
   res.render('help', {
     title: 'Help',
-    message: 'NodeJS Course',
+    message: 'Testing help route',
     name: 'Leo'
   });
 });

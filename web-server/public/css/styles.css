@@ -1,5 +1,6 @@
 body {
-  color: #333333;
+  background-color: #462749;
+  color: #ffeafc;
   font-family: arial;
   max-width: 650px;
   margin: 0 auto;
@@ -29,17 +30,18 @@ header {
 h1 {
   font-size: 64px;
   margin-bottom: 16px;
+  color: #e086d3;
 }
 
 nav a {
-  color: #888888;
+  color: #f2d1c9;
   margin-right: 16px;
   text-decoration: none;
   transition: all 0.3s;
 }
 
 nav a:hover {
-  color: #000;
+  color: #fce7e1;
 }
 
 .portrait {
@@ -47,14 +49,25 @@ nav a:hover {
 }
 
 input {
-  border: 1px solid #cccccc;
+  border: 1px solid #5e3961;
   padding: 8px;
+  background-color: #502e53;
+  caret-color: #a980ac;
+  color: #c6a7c9;
+}
+
+input::placeholder {
+  color: #a980ac;
 }
 
 button {
   cursor: pointer;
-  border: 1px solid #888888;
-  background: #888888;
-  color: white;
+  border: 1px solid#5e3961;
+  background-color: #452747;
+  color: #a980ac;
   padding: 8px;
+}
+
+button:hover {
+  background-color: #502e53;
 }
