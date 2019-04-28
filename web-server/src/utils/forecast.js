@@ -7,17 +7,18 @@ const forecast = (latitude, longitude, cb) => {
 
   request({ url, json: true }, (error, response, body) => {
     if (error) {
-      cb('Unable to connect to weather service!', undefined);
+      cb('Unable to connect to weather service!', undefined, undefined);
     } else if (body.error) {
-      cb('Unable to find a location.', undefined);
+      cb('Unable to find a location.', undefined, undefined);
     } else if (response.statusCode !== 200) {
-      cb(response.statusMessage, undefined);
+      cb(response.statusMessage, undefined, undefined);
     } else {
-      const { temperature, precipProbability } = body.currently;
+      const { temperature, precipProbability, icon } = body.currently;
       const dailySummary = body.daily.data[0].summary;
 
       cb(
         undefined,
+        icon,
         `${dailySummary} It is currently ${temperature} C degrees out. There is a ${precipProbability *
           100}% chance of precipitation.`
       );

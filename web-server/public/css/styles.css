@@ -72,3 +72,7 @@ button {
 button:hover {
   background-color: #502e53;
 }
+
+.icon {
+  margin: 10px 0 0 0;
+}

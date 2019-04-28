@@ -17,6 +17,11 @@ const fetchWeather = e => {
         locationDiv.textContent = data.error;
         inputSearch.value = '';
       } else {
+        const skycons = new Skycons({ color: '#f2d1c9' });
+        console.log(data);
+
+        skycons.add(document.getElementById('icon'), data.icon);
+        skycons.play();
         locationDiv.textContent = data.location;
         forecastDiv.textContent = data.data;
         inputSearch.value = '';
