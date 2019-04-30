@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -41,4 +41,18 @@ const UserSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+userSchema.pre('save', async function(next) {
+  try {
+    // const salt = await bcrypt.genSalt(10);
+    // const hash = await bcrypt.hash(this.password, salt);
+    // this.password = hash;
+    // console.log('yay');
+    // console.log(this.password);
+    console.log('before save');
+    next();
+  } catch (e) {
+    next();
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);
