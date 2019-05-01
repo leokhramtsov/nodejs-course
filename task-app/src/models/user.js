@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Username is required'],
     trim: true
   },
   age: {
@@ -19,7 +21,8 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    unique: true,
+    required: [true, 'Email is required'],
     trim: true,
     lowercase: true,
     validate(val) {
@@ -30,7 +33,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password is required'],
     trim: true,
     minlength: 7,
     validate(val) {
@@ -38,20 +41,54 @@ const userSchema = new Schema({
         throw new Error('Cannot contain word password');
       }
     }
-  }
+  },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
+userSchema.statics.findByCredentials = async function(email, password) {
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw new Error('Unable to login.');
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new error('Unable to login.');
+  }
+
+  return user;
+};
+
+userSchema.methods.generateAuthToken = async function() {
+  const token = jwt.sign({ _id: this._id.toString() }, 'qwerty', {
+    expiresIn: '1h'
+  });
+
+  this.tokens.push({ token });
+  await this.save();
+
+  return token;
+};
+
 userSchema.pre('save', async function(next) {
-  try {
-    // const salt = await bcrypt.genSalt(10);
-    // const hash = await bcrypt.hash(this.password, salt);
-    // this.password = hash;
-    // console.log('yay');
-    // console.log(this.password);
-    console.log('before save');
-    next();
-  } catch (e) {
-    next();
+  if (this.isModified('password')) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(this.password, salt);
+      this.password = hash;
+      next();
+    } catch (e) {
+      next(e);
+    }
   }
 });
 

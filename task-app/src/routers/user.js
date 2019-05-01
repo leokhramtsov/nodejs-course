@@ -6,9 +6,22 @@ router.post('/', async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
-    res.status(201).json(user);
+    const token = await user.generateAuthToken();
+    res.status(201).json({ user, token });
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findByCredentials(email, password);
+
+    const token = await user.generateAuthToken();
+    res.status(200).json({ user, token });
+  } catch (e) {
+    res.status(400).json(e);
   }
 });
 
@@ -49,11 +62,6 @@ router.patch('/:id', async (req, res) => {
   }
 
   try {
-    // const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    //   new: true,
-    //   runValidators: true
-    // });
-
     const user = await User.findById(req.params.id);
 
     if (!user) {
