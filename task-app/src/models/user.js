@@ -52,6 +52,16 @@ const userSchema = new Schema({
   ]
 });
 
+userSchema.methods.toJSON = function() {
+  const userObj = this.toObject();
+
+  delete userObj.password;
+  delete userObj.tokens;
+  delete userObj.__v;
+
+  return userObj;
+};
+
 userSchema.statics.findByCredentials = async function(email, password) {
   const user = await this.findOne({ email });
 
