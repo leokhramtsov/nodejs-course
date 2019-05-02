@@ -22,15 +22,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-const pet = {
-  name: 'Winston'
-};
-
-pet.toJSON = function() {
-  console.log(this);
-  return this;
-};
-
-console.log(JSON.stringify(pet));
-
 module.exports = auth;
