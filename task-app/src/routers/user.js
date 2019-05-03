@@ -68,7 +68,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.patch('/:id', async (req, res) => {
+router.patch('/me', auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ['name', 'password'];
   const isAllowedUpdate = updates.every(update =>
@@ -82,33 +82,35 @@ router.patch('/:id', async (req, res) => {
   }
 
   try {
-    const user = await User.findById(req.params.id);
+    // const user = await User.findById(req.params.id);
 
-    if (!user) {
-      return res.status(404).json({ message: 'No user found.' });
-    }
+    // if (!user) {
+    //   return res.status(404).json({ message: 'No user found.' });
+    // }
 
     updates.forEach(update => {
-      user[update] = req.body[update];
+      req.user[update] = req.body[update];
     });
 
-    await user.save();
+    await req.user.save();
 
-    res.status(200).json(user);
+    res.status(200).json({ message: 'User Updated' });
   } catch (e) {
     res.status(400).send();
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/me', auth, async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
+    // const user = await User.findByIdAndDelete(req.user._id);
 
-    if (!user) {
-      return res.status(404).json({ message: 'No user found.' });
-    }
+    // if (!user) {
+    //   return res.status(404).json({ message: 'No user found.' });
+    // }
 
-    res.status(200).json(user);
+    await req.user.remove();
+
+    res.status(200).json({ message: 'Deleted' });
   } catch (e) {
     res.status(400).send();
   }
