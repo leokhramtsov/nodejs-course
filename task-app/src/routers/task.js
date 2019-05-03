@@ -17,13 +17,38 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// GET /tasks?completed=false
 router.get('/', auth, async (req, res) => {
-  try {
-    const tasks = await Task.find({ owner: req.user._id });
+  const match = {};
+  const sort = {};
 
+  // if completed query parameter is present set true or false
+  // otherwise return all tasks
+  if (req.query.completed === 'true' || req.query.completed === 'false') {
+    match.completed = req.query.completed === 'true';
+  }
+
+  if (req.query.sortBy) {
+    const [sortBy, order] = req.query.sortBy.split('_');
+    sort[sortBy] = order === 'desc' ? -1 : 1;
+  }
+
+  try {
     // alternative solution
-    // await req.user.populate('tasks').execPopulate();
-    res.status(200).json(tasks);
+    // const tasks = await Task.find({ owner: req.user._id });
+
+    await req.user
+      .populate({
+        path: 'tasks',
+        match,
+        options: {
+          limit: parseInt(req.query.limit),
+          skip: parseInt(req.query.skip),
+          sort
+        }
+      })
+      .execPopulate();
+    res.status(200).json(req.user.tasks);
   } catch (e) {
     res.status(500).send();
   }
