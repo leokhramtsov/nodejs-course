@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon --require dotenv/config src/index.js dotenv_config_path=config/dev.env",
+    "test": "jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/config/dotenv-test.js"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -22,6 +29,8 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.11"
+    "jest": "^24.8.0",
+    "nodemon": "^1.18.11",
+    "supertest": "^4.0.2"
   }
 }
