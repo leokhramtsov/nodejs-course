@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon --require dotenv/config src/index.js dotenv_config_path=config/dev.env",
-    "test": "jest --watch"
+    "test": "jest --watch --runInBand"
   },
   "jest": {
     "testEnvironment": "node",
